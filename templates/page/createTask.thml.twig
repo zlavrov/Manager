@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create{% endblock %}
+
+{% block body %}
+
+    <div class="container"> 
+        {{ form_start(createTackForm) }}
+            <div class="mb-3">
+                {{ form_row(createTackForm.title) }}
+            </div>
+            <div class="mb-3">
+                {{ form_row(createTackForm.description) }}
+            </div>
+            <div class="mb-3">
+                {{ form_row(createTackForm.deadline) }}
+            </div>
+            <div class="mb-3">
+                {{ form_row(createTackForm.status) }}
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        {{ form_end(createTackForm) }}
+    </div>
+
+{% endblock %}

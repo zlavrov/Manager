@@ -3,8 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Task;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Task>
@@ -39,6 +39,40 @@ class TaskRepository extends ServiceEntityRepository
         }
     }
 
+    public function filterData($data, $user) {
+
+        $query = $this->createQueryBuilder('t');
+
+        if(!in_array('ROLE_ADMIN', $user->getRoles())) {
+            $query->andWhere('t.user = :val')
+            ->setParameter('val', $user->getId());
+        }
+
+        if(!empty($data->get('title'))) {
+            $query->andWhere('t.title LIKE :title')
+                ->setParameter('title', '%' . $data->get('title') . '%');
+        }
+    
+        if(!empty($data->get('status'))) {
+            $query->andWhere('t.status = :status')
+                ->setParameter('status', Task::STATUS[$data->get('status')]);
+        }
+    
+        if(!empty($data->get('start')) && !empty($data->get('stop'))) {
+    
+            $query->andWhere('t.deadline BETWEEN :start AND :stop')
+                ->setParameter('start', $data->get('start'))
+                ->setParameter('stop', $data->get('stop'));
+    
+        } else if (!empty($data->get('start'))) {
+    
+            $query->andWhere('t.deadline > :start')
+                ->setParameter('start', $data->get('start'));
+        }
+    
+        return $query->getQuery()->getResult();
+
+    }
 //    /**
 //     * @return Task[] Returns an array of Task objects
 //     */

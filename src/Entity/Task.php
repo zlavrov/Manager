@@ -2,15 +2,23 @@
 
 namespace App\Entity;
 
-use App\Repository\TaskRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\TaskRepository;
+use JMS\Serializer\Annotation\Type;
+use Doctrine\Common\Collections\Collection;
+use JMS\Serializer\Annotation as Serializer;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
 class Task
 {
+    const STATUS = [
+        "new" => 0,
+        "in progress" => 1,
+        "complete" => 2
+    ];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -22,19 +30,21 @@ class Task
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
+    #[ORM\Column(type: Types::SMALLINT, options: ["default" => 0])]
+    private ?int $status = 0;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $deadline = null;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updatedAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'task_id', targetEntity: Subscribe::class, orphanRemoval: true)]
-    private Collection $subscribes;
-
-    public function __construct()
-    {
-        $this->subscribes = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'yes')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -65,6 +75,30 @@ class Task
         return $this;
     }
 
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function setStatus(int $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getDeadline(): ?\DateTimeInterface
+    {
+        return $this->deadline;
+    }
+
+    public function setDeadline(\DateTimeInterface $deadline): self
+    {
+        $this->deadline = $deadline;
+
+        return $this;
+    }
+
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
@@ -89,32 +123,24 @@ class Task
         return $this;
     }
 
-    /**
-     * @return Collection<int, Subscribe>
-     */
-    public function getSubscribes(): Collection
+    public function prePersist()
     {
-        return $this->subscribes;
+        $this->createdAt = new \DateTime('now');
     }
 
-    public function addSubscribe(Subscribe $subscribe): self
+    public function preUpdate()
     {
-        if (!$this->subscribes->contains($subscribe)) {
-            $this->subscribes->add($subscribe);
-            $subscribe->setTaskId($this);
-        }
-
-        return $this;
+        $this->updatedAt = new \DateTime('now');
     }
 
-    public function removeSubscribe(Subscribe $subscribe): self
+    public function getUser(): ?User
     {
-        if ($this->subscribes->removeElement($subscribe)) {
-            // set the owning side to null (unless already changed)
-            if ($subscribe->getTaskId() === $this) {
-                $subscribe->setTaskId(null);
-            }
-        }
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

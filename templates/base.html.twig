@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Manager{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
         <link rel="stylesheet" href="{{ asset('styles/bootstrap.min.css') }}"/>
         <link rel="stylesheet" href="{{ asset('styles/style.css') }}"/>
@@ -27,29 +27,20 @@
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav me-auto mb-2 mb-md-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/">Home</a>
+                            <a class="nav-link active" aria-current="page" href="{{ path('TaskList') }}">MyTask</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/a">A</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/b">B</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/report">Report</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/activity">Activity</a>
+                            <a class="nav-link active" aria-current="page" href="{{ path('TaskCreate') }}">Create</a>
                         </li>
                     </ul>
                     <div class="d-flex">
                         <div class="bd-example">
                             <div class="btn-group">
                                 {% if app.user %}
-                                    <a class="btn btn-outline-success" href="/logout">LogOut</a>
+                                    <a class="btn btn-outline-success" href="{{ path('app_logout') }}">LogOut</a>
                                 {% else %}
-                                    <a class="btn btn-outline-success" href="/login">Login</a>
-                                    <a class="btn btn-outline-success" href="/register">Register</a>
+                                    <a class="btn btn-outline-success" href="{{ path('app_login') }}">Login</a>
+                                    <a class="btn btn-outline-success" href="{{ path('app_register') }}">Register</a>
                                 {% endif %}
                             </div>
                         </div>

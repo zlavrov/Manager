@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
 use DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -21,9 +21,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $username = null;
 
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
@@ -43,12 +40,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updatedAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Subscribe::class, orphanRemoval: true)]
-    private Collection $subscribes;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Task::class, orphanRemoval: true)]
+    private Collection $yes;
 
     public function __construct()
     {
-        $this->subscribes = new ArrayCollection();
+        $this->yes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -121,18 +118,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getUsername(): ?string
-    {
-        return $this->username;
-    }
-
-    public function setUsername(?string $username): self
-    {
-        $this->username = $username;
-
-        return $this;
-    }
-
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
@@ -158,29 +143,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Subscribe>
+     * @return Collection<int, Task>
      */
-    public function getSubscribes(): Collection
+    public function getYes(): Collection
     {
-        return $this->subscribes;
+        return $this->yes;
     }
 
-    public function addSubscribe(Subscribe $subscribe): self
+    public function addYe(Task $ye): self
     {
-        if (!$this->subscribes->contains($subscribe)) {
-            $this->subscribes->add($subscribe);
-            $subscribe->setUserId($this);
+        if (!$this->yes->contains($ye)) {
+            $this->yes->add($ye);
+            $ye->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeSubscribe(Subscribe $subscribe): self
+    public function removeYe(Task $ye): self
     {
-        if ($this->subscribes->removeElement($subscribe)) {
+        if ($this->yes->removeElement($ye)) {
             // set the owning side to null (unless already changed)
-            if ($subscribe->getUserId() === $this) {
-                $subscribe->setUserId(null);
+            if ($ye->getUser() === $this) {
+                $ye->setUser(null);
             }
         }
 

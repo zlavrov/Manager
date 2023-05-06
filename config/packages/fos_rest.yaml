@@ -1,0 +1,5 @@
+# Read the documentation: https://fosrestbundle.readthedocs.io/en/3.x/
+fos_rest:
+    body_converter:
+        enabled: true
+    
