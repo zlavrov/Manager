@@ -14,8 +14,17 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
+/**
+ * Summary of CreateTaskFormType
+ */
 class CreateTaskFormType extends AbstractType
 {
+    /**
+     * Summary of buildForm
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param mixed $options
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -48,13 +57,9 @@ class CreateTaskFormType extends AbstractType
                 ],
             ])
             ->add('deadline', DateTimeType::class, [
-                'placeholder' => [
-                    'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
-                ],
-                'attr' => ['class' => 'form-control'],
-                'widget' => 'single_text',
-
-            ])
+            'attr' => ['class' => 'form-control', 'min' => ( new \DateTime() )->format('Y-m-d H:i')],
+            'widget' => 'single_text',
+        ])
             ->add('status', ChoiceType::class, [
                 'attr' => ['class' => 'form-control', 'placeholder' => 'Description'],
                 'choices'  => [
@@ -65,6 +70,11 @@ class CreateTaskFormType extends AbstractType
             ]);
     }
 
+    /**
+     * Summary of configureOptions
+     * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

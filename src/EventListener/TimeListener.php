@@ -7,8 +7,15 @@ use Doctrine\ORM\Events;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 
+/**
+ * Summary of TimeListener
+ */
 class TimeListener implements EventSubscriber
 {
+    /**
+     * Summary of getSubscribedEvents
+     * @return array<string>
+     */
     public function getSubscribedEvents()
     {
         return [
@@ -17,6 +24,11 @@ class TimeListener implements EventSubscriber
         ];
     }
 
+    /**
+     * Summary of prePersist
+     * @param \Doctrine\Persistence\Event\LifecycleEventArgs $args
+     * @return void
+     */
     public function prePersist(LifecycleEventArgs $args)
     {
         $entity = $args->getObject();
@@ -26,6 +38,11 @@ class TimeListener implements EventSubscriber
         }
     }
 
+    /**
+     * Summary of preUpdate
+     * @param \Doctrine\Persistence\Event\LifecycleEventArgs $args
+     * @return void
+     */
     public function preUpdate(LifecycleEventArgs $args)
     {
         $entity = $args->getObject();

@@ -19,11 +19,21 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
+    /**
+     * Summary of __construct
+     * @param \Doctrine\Persistence\ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
     }
 
+    /**
+     * Summary of save
+     * @param \App\Entity\User $entity
+     * @param mixed $flush
+     * @return void
+     */
     public function save(User $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -33,6 +43,12 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         }
     }
 
+    /**
+     * Summary of remove
+     * @param \App\Entity\User $entity
+     * @param mixed $flush
+     * @return void
+     */
     public function remove(User $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);

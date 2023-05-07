@@ -20,6 +20,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
+/**
+ * Summary of TaskController
+ */
 class TaskController extends AbstractController
 {
     /**
@@ -56,6 +59,9 @@ class TaskController extends AbstractController
     public function CreateTack(Request $request, TaskCreateIn $taskCreateIn): Response
     {
         $user = $this->getUser();
+        if(!$user) {
+            return $this->redirectToRoute('app_login');
+        }
         $task = new TaskCreateIn();
         $form = $this->createForm(CreateTaskFormType::class, $task);
         $form->handleRequest($request);
@@ -80,6 +86,9 @@ class TaskController extends AbstractController
     public function TackUpdate(Request $request, TaskUpdateIn $taskUpdateIn, $id): Response
     {
         $user = $this->getUser();
+        if(!$user) {
+            return $this->redirectToRoute('app_login');
+        }
         $localTask = $this->taskRepository->find($id);
         $taskListOut =$this->autoMapper->map($localTask, TaskListOut::class);
         $taskListOut->deadline = new DateTime($taskListOut->deadline);
@@ -91,13 +100,17 @@ class TaskController extends AbstractController
             $this->entityManager->flush();
             return $this->redirectToRoute('TaskList');
         }
-
         return $this->render('page/updateTask.html.twig', [
             'updateTaskForm' => $form->createView()
         ]);
     }
 
-    #[Route('/task/list', name: 'TaskList', methods: ['GET'])]
+    /**
+     * Summary of getTaskList
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return Response|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+     #[Route('/task/list', name: 'TaskList', methods: ['GET'])]
     public function getTaskList(Request $request)
     {
         $user = $this->getUser();
@@ -111,9 +124,18 @@ class TaskController extends AbstractController
         ]);
     }
 
+    /**
+     * Summary of deleteTaskById
+     * @param mixed $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     #[Route('/task/delete/{id}', name: 'TaskDelete')]
     public function deleteTaskById($id): Response
     {
+        $user = $this->getUser();
+        if(!$user) {
+            return $this->redirectToRoute('app_login');
+        }
         $task = $this->taskRepository->find($id);
         $this->entityManager->remove($task);
         $this->entityManager->flush();

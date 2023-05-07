@@ -16,11 +16,21 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
  */
 class TaskRepository extends ServiceEntityRepository
 {
+    /**
+     * Summary of __construct
+     * @param \Doctrine\Persistence\ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Task::class);
     }
 
+    /**
+     * Summary of save
+     * @param \App\Entity\Task $entity
+     * @param mixed $flush
+     * @return void
+     */
     public function save(Task $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -30,6 +40,12 @@ class TaskRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * Summary of remove
+     * @param \App\Entity\Task $entity
+     * @param mixed $flush
+     * @return void
+     */
     public function remove(Task $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
@@ -39,6 +55,12 @@ class TaskRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * Summary of filterData
+     * @param mixed $data
+     * @param mixed $user
+     * @return mixed
+     */
     public function filterData($data, $user) {
 
         $query = $this->createQueryBuilder('t');
@@ -68,6 +90,10 @@ class TaskRepository extends ServiceEntityRepository
     
             $query->andWhere('t.deadline > :start')
                 ->setParameter('start', $data->get('start'));
+        }
+
+        if(!empty($data->get('sort'))) {
+            $query->orderBy('t.' . $data->get('sort'), 'ASC');
         }
     
         return $query->getQuery()->getResult();

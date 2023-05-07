@@ -1,11 +1,9 @@
 <form class="row g-3 mt-4" method="get" action="{{ path('TaskList') }}">
-
-    <div class="col-md-3">
+    <div class="col-md-2">
         <label class="form-label" for="filter_title">Filter by title:</label>
         <input type="text" name="title" class="form-control" id="filter_title">
     </div>
-
-    <div class="col-md-3">
+    <div class="col-md-2">
         <label class="form-label" for="filter_status">Filter by status:</label>
         <select class="form-select" name="status" id="filter_description">
             <option value="">All status</option>
@@ -14,19 +12,23 @@
             <option value="complete">Complete</option>
         </select>
     </div>
-
+    <div class="col-md-2">
+        <label class="form-label" for="filter_status">Sort by:</label>
+        <select class="form-select" name="sort" id="filter_description">
+            <option value="">All sorts</option>
+            <option value="title">Title</option>
+            <option value="deadline">Deadline</option>
+        </select>
+    </div>
     <div class="col-md-2">
         <label class="form-label" for="start_date">Start date:</label>
         <input type="date" class="form-control" name="start" id="start_date">
     </div>
-
     <div class="col-md-2">
         <label class="form-label" for="stop_date">Stop date:</label>
         <input type="date" class="form-control" name="stop" id="stop_date">
     </div>
-
     <div class="row col-md-2 mt-5">
         <button type="submit" class="btn btn-primary">Filter</button>
     </div>
-
 </form>

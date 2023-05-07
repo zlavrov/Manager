@@ -5,40 +5,24 @@
 {% block body %}
 
 <main class="form-signin w-100 m-auto">
-
     {{ form_start(registrationForm) }}
-
         <img class="mb-4" src="{{ asset('svg/rat_black.svg') }}" alt="logo">
-
-
         <h1 class="h3 mb-3 fw-normal">Register</h1>
-
-
-
         <div class="form-floating">
             {{ form_widget(registrationForm.email) }}
             <label for="registration_form_email">Email</label>
         </div>
-
         <div class="form-floating">
             {{ form_widget(registrationForm.plainPassword) }}
             <label for="registration_form_plainPassword">Password</label>
         </div>
-
         <div class="checkbox mb-3">
             <label>
                 {{ form_widget(registrationForm.agreeTerms) }} Remember me
             </label>
         </div>
-
         <button class="w-100 btn btn-lg btn-primary" type="submit">Sign up</button>
-
     {{ form_end(registrationForm) }}
-
-
-
-
-
 </main>
 
 {% endblock %}

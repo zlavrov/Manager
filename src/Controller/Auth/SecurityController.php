@@ -7,8 +7,16 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
+/**
+ * Summary of SecurityController
+ */
 class SecurityController extends AbstractController
 {
+    /**
+     * Summary of login
+     * @param \Symfony\Component\Security\Http\Authentication\AuthenticationUtils $authenticationUtils
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -24,6 +32,11 @@ class SecurityController extends AbstractController
         return $this->render('auth/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
+    /**
+     * Summary of logout
+     * @throws \LogicException
+     * @return never
+     */
     #[Route(path: '/logout', name: 'app_logout')]
     public function logout(): void
     {

@@ -9,12 +9,21 @@ use App\Model\In\Task\TaskUpdateIn;
 use App\Model\Out\Task\TaskListOut;
 use App\Model\In\Task\AbstractTaskIn;
 
+use App\Entity\User;
+use App\Model\In\User\UserCreateIn;
+use App\Model\In\User\UserUpdateIn;
+use App\Model\Out\User\UserListOut;
+use App\Model\In\User\AbstractUserIn;
+
 use AutoMapperPlus\AutoMapperInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\Annotation as Serializer;
 use AutoMapperPlus\Configuration\AutoMapperConfigInterface;
 use AutoMapperPlus\AutoMapperPlusBundle\AutoMapperConfiguratorInterface;
 
+/**
+ * Summary of AutoMapperConfig
+ */
 class AutoMapperConfig implements AutoMapperConfiguratorInterface
 {
     /**
@@ -27,17 +36,33 @@ class AutoMapperConfig implements AutoMapperConfiguratorInterface
      */
     private $autoMapper;
     
+    /**
+     * Summary of __construct
+     * @param \AutoMapperPlus\AutoMapperInterface $autoMapper
+     * @param \Doctrine\ORM\EntityManagerInterface $entityManager
+     */
     public function __construct(AutoMapperInterface $autoMapper, EntityManagerInterface $entityManager)
     {
         $this->autoMapper = $autoMapper;
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * Summary of configure
+     * @param \AutoMapperPlus\Configuration\AutoMapperConfigInterface $config
+     * @return void
+     */
     public function configure(AutoMapperConfigInterface $config): void
     {
         $this->configureTask($config);
+        $this->configureUser($config);
     }
 
+    /**
+     * Summary of configureTask
+     * @param \AutoMapperPlus\Configuration\AutoMapperConfigInterface $config
+     * @return void
+     */
     public function configureTask(AutoMapperConfigInterface $config): void
     {            
         // TaskCreateIn model -> Task entity
@@ -72,5 +97,25 @@ class AutoMapperConfig implements AutoMapperConfiguratorInterface
         ->forMember('status', function (TaskListOut $taskListOut){
             return Task::STATUS[$taskListOut->status];
         });
+    }
+
+    /**
+     * Summary of configureUser
+     * @param \AutoMapperPlus\Configuration\AutoMapperConfigInterface $config
+     * @return void
+     */
+    public function configureUser(AutoMapperConfigInterface $config): void
+    {            
+        // UserCreateIn model -> User entity
+        $config->registerMapping(UserCreateIn::class, User::class);
+
+        // UserUpdateIn model -> User entity
+        $config->registerMapping(UserUpdateIn::class, User::class);
+
+        // User entity -> UserListOut model
+        $config->registerMapping(User::class, UserListOut::class);
+
+        // UserListOut model -> User entity
+        $config->registerMapping(UserListOut::class, User::class);
     }
 }

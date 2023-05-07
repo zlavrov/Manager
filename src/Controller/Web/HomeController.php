@@ -6,8 +6,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * Summary of HomeController
+ */
 class HomeController extends AbstractController
 {
+    /**
+     * Summary of index
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     #[Route('/', name: 'app_home')]
     public function index(): Response
     {

@@ -3,9 +3,7 @@
 namespace App\Form;
 
 use App\Model\In\Task\TaskUpdateIn;
-
 use App\Model\Out\Task\TaskListOut;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Length;
@@ -17,8 +15,17 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
+/**
+ * Summary of UpdateTaskFormType
+ */
 class UpdateTaskFormType extends AbstractType
 {
+    /**
+     * Summary of buildForm
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param mixed $options
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -69,6 +76,11 @@ class UpdateTaskFormType extends AbstractType
             ]);
     }
 
+    /**
+     * Summary of configureOptions
+     * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

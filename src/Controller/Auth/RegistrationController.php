@@ -15,8 +15,20 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
+/**
+ * Summary of RegistrationController
+ */
 class RegistrationController extends AbstractController
 {
+    /**
+     * Summary of register
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface $userPasswordHasher
+     * @param \Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface $userAuthenticator
+     * @param \App\Security\AppCustomAuthenticator $authenticator
+     * @param \Doctrine\ORM\EntityManagerInterface $entityManager
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, AppCustomAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
     {

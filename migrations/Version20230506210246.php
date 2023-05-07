@@ -10,13 +10,22 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20230505125807 extends AbstractMigration
+final class Version20230506210246 extends AbstractMigration
 {
+    /**
+     * Summary of getDescription
+     * @return string
+     */
     public function getDescription(): string
     {
         return '';
     }
 
+    /**
+     * Summary of up
+     * @param \Doctrine\DBAL\Schema\Schema $schema
+     * @return void
+     */
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
@@ -26,6 +35,11 @@ final class Version20230505125807 extends AbstractMigration
         $this->addSql('ALTER TABLE task ADD CONSTRAINT FK_527EDB25A76ED395 FOREIGN KEY (user_id) REFERENCES `user` (id)');
     }
 
+    /**
+     * Summary of down
+     * @param \Doctrine\DBAL\Schema\Schema $schema
+     * @return void
+     */
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs

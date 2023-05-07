@@ -9,7 +9,6 @@ class TaskListOut
 
     public $id;
 
-
     public $title;
 
     public $description;
